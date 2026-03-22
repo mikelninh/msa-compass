@@ -1,0 +1,22 @@
+{
+  "name": "msa-compass",
+  "version": "2.0.0",
+  "description": "The all-in-one platform for MSA-C patients, caregivers, and researchers. Track symptoms, analyze speech and gait, contribute to research, and stay informed about the treatment pipeline.",
+  "keywords": ["MSA", "multiple-system-atrophy", "MSA-C", "digital-biomarkers", "patient-tracker", "neurodegenerative", "clinical-research", "open-source-health"],
+  "author": "Mikel & the MSA Community",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.0",
+    "vite": "^5.0.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  }
+}
