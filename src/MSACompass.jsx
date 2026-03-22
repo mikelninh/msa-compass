@@ -7,7 +7,7 @@ import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 // ═══════════════════════════════════════════════════════════
 
 // ─── i18n (3 languages) ──────────────────────────────────
-const LANGS = { en: "English", de: "Deutsch", vi: "Tiếng Việt" };
+const LANGS = { en: "English", de: "Deutsch", vi: "Tiếng Việt", ja: "日本語", ko: "한국어" };
 const T = {
   en: {
     appName: "MSA Compass", tagline: "Track · Analyze · Research · Hope",
@@ -81,6 +81,24 @@ const T = {
     // Motivational
     quoteOfDay: "Hope is a discipline.",
     hopeTitle: "We Are Not Alone", hopeDesc: "MSA Compass is used by patients and caregivers around the world. Every entry counts.",
+    // SARA
+    saraModule: "SARA Score", saraDesc: "8-item coordination scale (0-24)",
+    saraTitle: "SARA — Coordination Scale",
+    saraInstr: "Rate each item for TODAY. Maps to the clinical SARA scale used in MSA trials.",
+    saraItem1: "Gait", saraItem1Desc: "Ability to walk",
+    saraItem2: "Stance", saraItem2Desc: "Stability when standing",
+    saraItem3: "Sitting", saraItem3Desc: "Stability when sitting upright",
+    saraItem4: "Speech", saraItem4Desc: "Clarity and fluency",
+    saraItem5: "Finger Coord.", saraItem5Desc: "Finger movements & fine motor",
+    saraItem6: "Nose-Finger", saraItem6Desc: "Accuracy of finger-to-nose",
+    saraItem7: "Hand Rhythm", saraItem7Desc: "Alternating hand movements",
+    saraItem8: "Heel-Shin", saraItem8Desc: "Heel-to-shin coordination",
+    saraScore: "SARA Score", saraMild: "Mild (0–7)", saraMod: "Moderate (8–15)", saraSev: "Severe (16–24)",
+    // Share
+    shareBtn: "Share This App",
+    shareMsg: "MSA Compass is a free tracking app for Multiple System Atrophy. Share with patients and caregivers worldwide.",
+    shareCopied: "Link copied ✓",
+    exportCDISC: "Export Research Format (CDISC-aligned)",
   },
   de: {
     appName: "MSA Kompass", tagline: "Erfassen · Analysieren · Forschen · Hoffen",
@@ -148,6 +166,22 @@ const T = {
     medName: "Medikament", medDose: "Dosis", medTime: "Einnahmezeit", addMed: "Hinzufügen", removeMed: "✕",
     quoteOfDay: "Hoffnung ist eine Disziplin.",
     hopeTitle: "Wir sind nicht allein", hopeDesc: "MSA Kompass wird weltweit von Patienten und Pflegenden genutzt.",
+    saraModule: "SARA-Wert", saraDesc: "8-Punkte Koordinationsskala (0-24)",
+    saraTitle: "SARA — Koordinationsskala",
+    saraInstr: "Bitte für HEUTE bewerten. Entspricht der klinischen SARA-Skala aus MSA-Studien.",
+    saraItem1: "Gehen", saraItem1Desc: "Gehfähigkeit",
+    saraItem2: "Stehen", saraItem2Desc: "Standsicherheit",
+    saraItem3: "Sitzen", saraItem3Desc: "Stabilität im Sitzen",
+    saraItem4: "Sprache", saraItem4Desc: "Sprachklarheit",
+    saraItem5: "Fingerkoord.", saraItem5Desc: "Fingerbewegungen & Feinmotorik",
+    saraItem6: "Finger-Nase", saraItem6Desc: "Finger-Nasen-Test Genauigkeit",
+    saraItem7: "Handrhythmus", saraItem7Desc: "Wechselbewegungen der Hände",
+    saraItem8: "Ferse-Schienbein", saraItem8Desc: "Ferse-Schienbein-Koordination",
+    saraScore: "SARA-Wert", saraMild: "Leicht (0–7)", saraMod: "Mäßig (8–15)", saraSev: "Schwer (16–24)",
+    shareBtn: "Diese App teilen",
+    shareMsg: "MSA Kompass ist eine kostenlose App zur Verfolgung von MSA-Symptomen. Mit Patienten und Pflegenden teilen.",
+    shareCopied: "Link kopiert ✓",
+    exportCDISC: "Forschungsformat exportieren (CDISC)",
   },
   vi: {
     appName: "MSA La Bàn", tagline: "Theo dõi · Phân tích · Nghiên cứu · Hy vọng",
@@ -215,6 +249,188 @@ const T = {
     medName: "Tên thuốc", medDose: "Liều", medTime: "Giờ uống", addMed: "Thêm", removeMed: "✕",
     quoteOfDay: "Hy vọng là một kỷ luật.",
     hopeTitle: "Chúng ta không đơn độc", hopeDesc: "MSA La Bàn được sử dụng bởi bệnh nhân và người chăm sóc trên toàn thế giới.",
+    saraModule: "Điểm SARA", saraDesc: "Thang điểm 8 mục (0-24)",
+    saraTitle: "SARA — Phối hợp vận động",
+    saraInstr: "Đánh giá cho HÔM NAY. Tương ứng thang SARA lâm sàng dùng trong thử nghiệm MSA.",
+    saraItem1: "Đi lại", saraItem1Desc: "Khả năng đi bộ",
+    saraItem2: "Đứng", saraItem2Desc: "Ổn định khi đứng",
+    saraItem3: "Ngồi", saraItem3Desc: "Ổn định khi ngồi",
+    saraItem4: "Lời nói", saraItem4Desc: "Độ rõ của giọng nói",
+    saraItem5: "Phối hợp ngón tay", saraItem5Desc: "Vận động ngón tay tinh",
+    saraItem6: "Ngón tay-mũi", saraItem6Desc: "Độ chính xác ngón tay chỉ mũi",
+    saraItem7: "Nhịp tay", saraItem7Desc: "Cử động luân phiên tay",
+    saraItem8: "Gót-xương chày", saraItem8Desc: "Phối hợp gót-xương chày",
+    saraScore: "Điểm SARA", saraMild: "Nhẹ (0–7)", saraMod: "Vừa (8–15)", saraSev: "Nặng (16–24)",
+    shareBtn: "Chia sẻ ứng dụng",
+    shareMsg: "MSA La Bàn là ứng dụng miễn phí theo dõi triệu chứng MSA. Chia sẻ với bệnh nhân và người chăm sóc.",
+    shareCopied: "Đã sao chép liên kết ✓",
+    exportCDISC: "Xuất định dạng nghiên cứu (CDISC)",
+  },
+  ja: {
+    appName: "MSA コンパス", tagline: "記録 · 分析 · 研究 · 希望",
+    home: "ホーム", track: "記録", analyze: "分析", research: "研究", pipeline: "治療薬", settings: "設定",
+    goodMorning: "おはようございます", goodAfternoon: "こんにちは", goodEvening: "こんばんは",
+    todaySummary: "今日の進捗", completedOf: "/", modules: "完了",
+    alertsTitle: "傾向アラート", noAlerts: "アラートなし — 記録を続けて傾向を確認",
+    dailyCheckin: "日次チェックイン", howAreYou: "今日の体調は？",
+    much_better: "かなり良い", somewhat_better: "少し良い", same: "変わらず",
+    somewhat_worse: "少し悪い", much_worse: "かなり悪い",
+    walkTest: "歩行テスト", walkTestDesc: "2分歩行 — スマホが歩行パターンを検出",
+    voiceTest: "音声分析", voiceTestDesc: "30秒音読 — AIが発話を分析",
+    bloodPressure: "血圧", bpDesc: "臥位・立位 — 起立性低血圧を検出",
+    fallsLog: "転倒記録", fallsDesc: "転倒・転倒しそうになった回数",
+    symptoms: "症状", symptomsDesc: "MSA-Cの8つの主要領域を評価",
+    meds: "薬", medsDesc: "服薬・時間を記録",
+    balance: "バランス", walking: "歩行", speech: "発話", swallowing: "嚥下",
+    dizziness: "めまい", fatigue: "疲労", bladder: "膀胱", sleep: "睡眠の質",
+    none: "なし", mild: "軽度", moderate: "中等度", severe: "重度",
+    systolic: "収縮期", diastolic: "拡張期", heartRate: "心拍数",
+    lying: "臥位", standing: "立位", addReading: "保存",
+    falls: "今日の転倒", nearFalls: "今日のひやり",
+    notes: "メモ（任意）", save: "保存", saved: "保存済み ✓",
+    walkInstructions: "スマホをポケットに入れるか安定して持ち、普通のペースで2分間歩いてください。",
+    startWalking: "歩行開始", stopWalking: "停止",
+    stepsDetected: "動作イベント", walkingTime: "歩行時間",
+    voiceInstructions: "この文章を普通のペースではっきりと読んでください：",
+    voicePassageEN: '「太陽が丘の上で暖かく輝いていた。鳥が朝の風の中で歌っていた。川は谷間を静かに流れ、古い橋はいつものように、忍耐強く力強く立っていた。」',
+    startRecording: "録音開始", stopRecording: "録音停止",
+    recording: "録音中...", recordingTime: "録音時間",
+    completedToday: "完了", pending: "準備完了",
+    analyzeTitle: "分析", speechAnalysis: "音声分析", gaitAnalysis: "歩行分析",
+    trendsTitle: "傾向", weeklyTrend: "週次傾向", monthlyTrend: "月次傾向",
+    overallFeeling: "総合的な体調", symptomTrends: "症状の傾向",
+    noDataYet: "データを記録して分析を表示",
+    pitchVariability: "音高変動", speakingRate: "発話速度",
+    pauseRatio: "休止率", speechScore: "発話スコア",
+    strideRegularity: "歩調規則性", swayMagnitude: "揺れの強さ",
+    walkSymmetry: "歩行対称性", gaitScore: "歩行スコア",
+    normal: "正常", atRisk: "注意", concern: "要確認",
+    trendStable: "安定", trendImproving: "改善中", trendDeclining: "悪化中",
+    trendAlert: "急速な悪化を検出", trendAlertDesc: "神経科医への相談を検討してください",
+    week: "週", month: "月", all: "全期間",
+    researchTitle: "研究ハブ", contributeData: "研究に貢献",
+    contributeDesc: "匿名化したデータをMSA研究者と共有。臨床試験を加速させ治療薬を早く届けるために。",
+    anonymized: "個人情報はすべて削除されます",
+    contributeBtn: "匿名エクスポートを準備", contributed: "データ出力済み ✓",
+    trialsTitle: "臨床試験", trialsDesc: "MSA患者を募集中の試験",
+    findTrials: "近くの試験を探す",
+    naturalHistory: "自然歴プロジェクト",
+    naturalHistoryDesc: "毎日の記録が史上最大のMSA-Cデータセット構築に貢献します。このデータは将来の試験の対照群として活用できます。",
+    dataPoints: "データポイント", daysTracked: "追跡日数", patients: "世界の患者",
+    pipelineTitle: "治療薬パイプライン", pipelineDesc: "希望の現在地 — 最新研究概要",
+    phase1: "第1相", phase2: "第2相", phase3: "第3相", approved: "承認済み",
+    leadCandidate: "候補薬", mechanism: "作用機序", status: "ステータス",
+    resultsExpected: "結果予定", company: "企業", mostAdvanced: "最先端",
+    language: "言語", exportData: "全データ出力", exportCSV: "CSV出力",
+    exportJSON: "JSON出力", exportDesc: "医療チームと共有または研究に貢献",
+    about: "MSA コンパスについて",
+    aboutText: "MSA コンパスはMSA患者、介護者、研究者のためのオールインワンプラットフォームです。すべてのデータポイントが治療薬の実現を早めます。",
+    privacyNote: "すべてのデータはデバイス上に保存されます 🔒",
+    resetData: "全データリセット", resetConfirm: "すべてのデータが永久に削除されます。よろしいですか？",
+    cancel: "キャンセル", confirm: "はい、リセット",
+    version: "v2.0 — MSAコミュニティのために",
+    medName: "薬名", medDose: "用量", medTime: "服薬時間", addMed: "追加", removeMed: "✕",
+    quoteOfDay: "希望は習慣だ。",
+    hopeTitle: "私たちは一人ではない", hopeDesc: "MSA コンパスは世界中の患者と介護者に使われています。",
+    saraModule: "SARAスコア", saraDesc: "8項目協調スケール (0-24)",
+    saraTitle: "SARA — 協調運動スケール",
+    saraInstr: "今日の状態を評価してください。MSA臨床試験で使用されるSARAスケールに対応。",
+    saraItem1: "歩行", saraItem1Desc: "歩く能力",
+    saraItem2: "立位", saraItem2Desc: "立っているときの安定性",
+    saraItem3: "座位", saraItem3Desc: "座っているときの安定性",
+    saraItem4: "発話", saraItem4Desc: "言葉の明瞭さ",
+    saraItem5: "指の協調", saraItem5Desc: "指先の動き・細かい作業",
+    saraItem6: "指鼻試験", saraItem6Desc: "指で鼻を指す精度",
+    saraItem7: "手の交互運動", saraItem7Desc: "手の交互リズム運動",
+    saraItem8: "踵・脛骨", saraItem8Desc: "踵から脛骨への協調",
+    saraScore: "SARAスコア", saraMild: "軽度 (0–7)", saraMod: "中等度 (8–15)", saraSev: "重度 (16–24)",
+    shareBtn: "このアプリをシェア",
+    shareMsg: "MSA コンパスはMSA症状を追跡する無料アプリです。患者や介護者と共有してください。",
+    shareCopied: "リンクをコピーしました ✓",
+    exportCDISC: "研究フォーマットで出力 (CDISC)",
+  },
+  ko: {
+    appName: "MSA 나침반", tagline: "추적 · 분석 · 연구 · 희망",
+    home: "홈", track: "기록", analyze: "분석", research: "연구", pipeline: "치료제", settings: "설정",
+    goodMorning: "좋은 아침입니다", goodAfternoon: "안녕하세요", goodEvening: "안녕하세요",
+    todaySummary: "오늘의 진행상황", completedOf: "/", modules: "완료",
+    alertsTitle: "추세 알림", noAlerts: "알림 없음 — 계속 기록하여 인사이트 확인",
+    dailyCheckin: "일일 체크인", howAreYou: "오늘 환자의 상태는 어떤가요?",
+    much_better: "훨씬 좋음", somewhat_better: "조금 좋음", same: "비슷함",
+    somewhat_worse: "조금 나쁨", much_worse: "훨씬 나쁨",
+    walkTest: "보행 테스트", walkTestDesc: "2분 보행 — 스마트폰이 보행 패턴 감지",
+    voiceTest: "음성 분석", voiceTestDesc: "30초 낭독 — AI가 발화 분석",
+    bloodPressure: "혈압", bpDesc: "누운 자세 & 선 자세 — 기립성 저혈압 감지",
+    fallsLog: "낙상 기록", fallsDesc: "낙상 및 낙상 위험 기록",
+    symptoms: "증상", symptomsDesc: "MSA-C 8개 주요 영역 평가",
+    meds: "약물", medsDesc: "복용량 및 시간 기록",
+    balance: "균형", walking: "보행", speech: "언어", swallowing: "삼킴",
+    dizziness: "어지러움", fatigue: "피로", bladder: "방광", sleep: "수면 질",
+    none: "없음", mild: "경미", moderate: "중등도", severe: "심함",
+    systolic: "수축기", diastolic: "이완기", heartRate: "심박수",
+    lying: "누운 자세", standing: "선 자세", addReading: "저장",
+    falls: "오늘 낙상", nearFalls: "오늘 낙상 위험",
+    notes: "메모 (선택)", save: "저장", saved: "저장됨 ✓",
+    walkInstructions: "스마트폰을 주머니에 넣거나 안정적으로 쥐고 평소 속도로 2분간 걸으세요.",
+    startWalking: "보행 시작", stopWalking: "중지",
+    stepsDetected: "동작 이벤트", walkingTime: "보행 시간",
+    voiceInstructions: "이 문장을 평소 속도로 명확하게 읽으세요:",
+    voicePassageEN: '"햇살이 언덕 위에 따뜻하게 내리쬐었다. 새들이 아침 공기 속에서 노래했다. 강은 골짜기를 조용히 흘렀고, 오래된 다리는 늘 그랬듯이 인내하며 굳건히 서 있었다."',
+    startRecording: "녹음 시작", stopRecording: "녹음 중지",
+    recording: "녹음 중...", recordingTime: "녹음 시간",
+    completedToday: "완료", pending: "준비됨",
+    analyzeTitle: "분석", speechAnalysis: "음성 분석", gaitAnalysis: "보행 분석",
+    trendsTitle: "추세", weeklyTrend: "주간 추세", monthlyTrend: "월간 추세",
+    overallFeeling: "전반적인 상태", symptomTrends: "증상 추세",
+    noDataYet: "분석을 보려면 데이터를 기록하세요",
+    pitchVariability: "음높이 변동성", speakingRate: "발화 속도",
+    pauseRatio: "휴지 비율", speechScore: "발화 점수",
+    strideRegularity: "보행 규칙성", swayMagnitude: "흔들림 강도",
+    walkSymmetry: "보행 대칭성", gaitScore: "보행 점수",
+    normal: "정상", atRisk: "주의", concern: "우려",
+    trendStable: "안정", trendImproving: "개선 중", trendDeclining: "악화 중",
+    trendAlert: "빠른 악화 감지됨", trendAlertDesc: "신경과 전문의와 상담을 고려하세요",
+    week: "주", month: "월", all: "전체",
+    researchTitle: "연구 허브", contributeData: "연구에 기여",
+    contributeDesc: "익명화된 데이터를 전 세계 MSA 연구자들과 공유하세요. 데이터가 임상시험을 가속화합니다.",
+    anonymized: "모든 개인 식별 정보가 제거됩니다",
+    contributeBtn: "익명 내보내기 준비", contributed: "데이터 내보냄 ✓",
+    trialsTitle: "임상시험", trialsDesc: "MSA 환자를 모집 중인 시험",
+    findTrials: "가까운 시험 찾기",
+    naturalHistory: "자연 경과 프로젝트",
+    naturalHistoryDesc: "매일 기록하면 역대 최대 MSA-C 데이터셋 구축에 기여합니다. 이 데이터는 미래 시험의 합성 대조군으로 활용될 수 있습니다.",
+    dataPoints: "데이터 포인트", daysTracked: "추적 일수", patients: "전 세계 환자",
+    pipelineTitle: "치료 파이프라인", pipelineDesc: "희망의 현재 위치 — 최신 연구 개요",
+    phase1: "1상", phase2: "2상", phase3: "3상", approved: "승인됨",
+    leadCandidate: "후보 약물", mechanism: "작용 기전", status: "상태",
+    resultsExpected: "결과 예상", company: "회사", mostAdvanced: "가장 앞선",
+    language: "언어", exportData: "전체 데이터 내보내기", exportCSV: "CSV 내보내기",
+    exportJSON: "JSON 내보내기", exportDesc: "의료팀과 공유하거나 연구에 기여",
+    about: "MSA 나침반 소개",
+    aboutText: "MSA 나침반은 MSA 환자, 보호자, 연구자를 위한 올인원 플랫폼입니다. 모든 데이터 포인트가 효과적인 치료에 더 가까이 다가서게 합니다.",
+    privacyNote: "모든 데이터는 기기에 저장됩니다 🔒",
+    resetData: "전체 데이터 초기화", resetConfirm: "모든 데이터가 영구적으로 삭제됩니다. 확실합니까?",
+    cancel: "취소", confirm: "예, 초기화",
+    version: "v2.0 — MSA 커뮤니티를 위해",
+    medName: "약 이름", medDose: "복용량", medTime: "복용 시간", addMed: "추가", removeMed: "✕",
+    quoteOfDay: "희망은 규율이다.",
+    hopeTitle: "우리는 혼자가 아닙니다", hopeDesc: "MSA 나침반은 전 세계 환자와 보호자들이 사용하고 있습니다.",
+    saraModule: "SARA 점수", saraDesc: "8항목 협응 척도 (0-24)",
+    saraTitle: "SARA — 협응 운동 척도",
+    saraInstr: "오늘 상태를 평가하세요. MSA 임상시험에서 사용되는 SARA 척도와 일치합니다.",
+    saraItem1: "보행", saraItem1Desc: "걷는 능력",
+    saraItem2: "기립", saraItem2Desc: "서 있을 때의 안정성",
+    saraItem3: "착석", saraItem3Desc: "앉아 있을 때의 안정성",
+    saraItem4: "발화", saraItem4Desc: "발화의 명확성",
+    saraItem5: "손가락 협응", saraItem5Desc: "손가락 움직임, 섬세한 동작",
+    saraItem6: "손가락-코 검사", saraItem6Desc: "손가락으로 코를 짚는 정확성",
+    saraItem7: "손 교대 운동", saraItem7Desc: "손 교대 리듬 운동",
+    saraItem8: "발뒤꿈치-정강이", saraItem8Desc: "발뒤꿈치-정강이 협응",
+    saraScore: "SARA 점수", saraMild: "경미 (0–7)", saraMod: "중등도 (8–15)", saraSev: "심함 (16–24)",
+    shareBtn: "이 앱 공유하기",
+    shareMsg: "MSA 나침반은 MSA 증상을 추적하는 무료 앱입니다. 환자와 보호자들과 공유하세요.",
+    shareCopied: "링크가 복사되었습니다 ✓",
+    exportCDISC: "연구 형식으로 내보내기 (CDISC)",
   },
 };
 
@@ -243,24 +459,54 @@ const sSet = async (k, v) => { try { await window.storage.set(k, JSON.stringify(
 function analyzeSpeechData(audioData) {
   if (!audioData || audioData.length === 0) return null;
   const bufferSize = audioData.length;
-  let zeroCrossings = 0, energy = 0, maxAmp = 0, silentFrames = 0;
+  const frameSize = 512;
+  const frames = Math.floor(bufferSize / frameSize);
   const silenceThreshold = 0.02;
-  for (let i = 1; i < bufferSize; i++) {
-    if ((audioData[i] >= 0 && audioData[i - 1] < 0) || (audioData[i] < 0 && audioData[i - 1] >= 0)) zeroCrossings++;
-    const amp = Math.abs(audioData[i]);
-    energy += amp * amp;
-    if (amp > maxAmp) maxAmp = amp;
-    if (amp < silenceThreshold) silentFrames++;
+  let zeroCrossings = 0, energy = 0;
+  const voicedFramePeaks = [];
+
+  for (let fi = 0; fi < frames; fi++) {
+    const start = fi * frameSize;
+    let frameEnergy = 0, framePeak = 0;
+    for (let i = start + 1; i < start + frameSize && i < bufferSize; i++) {
+      if ((audioData[i] >= 0 && audioData[i-1] < 0) || (audioData[i] < 0 && audioData[i-1] >= 0)) zeroCrossings++;
+      const amp = Math.abs(audioData[i]);
+      frameEnergy += amp * amp;
+      energy += amp * amp;
+      if (amp > framePeak) framePeak = amp;
+    }
+    const rms = Math.sqrt(frameEnergy / frameSize);
+    if (rms > silenceThreshold) voicedFramePeaks.push(framePeak);
   }
+
   const avgEnergy = Math.sqrt(energy / bufferSize);
   const zcRate = zeroCrossings / (bufferSize / 44100);
-  const pauseRatio = silentFrames / bufferSize;
+  const pauseRatio = Math.max(0, 1 - voicedFramePeaks.length / Math.max(1, frames));
   const estimatedPitch = zcRate / 2;
   const pitchVariability = Math.min(100, Math.max(0, (estimatedPitch - 80) / 3));
   const speakingRate = Math.min(100, Math.max(0, (1 - pauseRatio) * 100));
   const pauseScore = Math.min(100, pauseRatio * 200);
-  const speechScore = Math.round(Math.max(0, Math.min(100, 100 - (pitchVariability * 0.3 + pauseScore * 0.4 + (100 - speakingRate) * 0.3))));
-  return { pitchVariability: Math.round(pitchVariability), speakingRate: Math.round(speakingRate), pauseRatio: Math.round(pauseScore), speechScore, avgEnergy: Math.round(avgEnergy * 1000) / 1000 };
+
+  // Jitter estimate: CV of voiced frame peak amplitudes (proxy for pitch period irregularity)
+  let jitter = 0;
+  if (voicedFramePeaks.length > 5) {
+    const mean = voicedFramePeaks.reduce((a, b) => a + b, 0) / voicedFramePeaks.length;
+    const std = Math.sqrt(voicedFramePeaks.reduce((a, b) => a + (b - mean) ** 2, 0) / voicedFramePeaks.length);
+    jitter = Math.round(Math.min(100, (std / (mean + 1e-6)) * 200));
+  }
+
+  // Shimmer estimate: mean absolute difference between consecutive voiced frame amplitudes
+  let shimmer = 0;
+  if (voicedFramePeaks.length > 5) {
+    const avgPeak = voicedFramePeaks.reduce((a, b) => a + b, 0) / voicedFramePeaks.length;
+    const avgDiff = voicedFramePeaks.slice(1).reduce((a, b, i) => a + Math.abs(b - voicedFramePeaks[i]), 0) / (voicedFramePeaks.length - 1);
+    shimmer = Math.round(Math.min(100, (avgDiff / (avgPeak + 1e-6)) * 300));
+  }
+
+  const speechScore = Math.round(Math.max(0, Math.min(100,
+    100 - (pitchVariability * 0.2 + pauseScore * 0.3 + (100 - speakingRate) * 0.2 + jitter * 0.15 + shimmer * 0.15)
+  )));
+  return { pitchVariability: Math.round(pitchVariability), speakingRate: Math.round(speakingRate), pauseRatio: Math.round(pauseScore), speechScore, jitter, shimmer, avgEnergy: Math.round(avgEnergy * 1000) / 1000 };
 }
 
 // ─── Gait Analysis Engine ────────────────────────────────
@@ -294,7 +540,10 @@ function analyzeGaitData(motionSamples) {
   const swayMagnitude = Math.round(Math.min(100, stdDev * 20));
   const symmetry = Math.round(Math.max(0, 100 - swayMagnitude * 0.5));
   const gaitScore = Math.round((regularity * 0.4 + (100 - swayMagnitude) * 0.3 + symmetry * 0.3));
-  return { strideRegularity: regularity, swayMagnitude, walkSymmetry: symmetry, gaitScore, peakCount: peaks };
+  const strideIntervalCV = intervals.length > 2
+    ? Math.round((() => { const avg = intervals.reduce((a,b)=>a+b,0)/intervals.length; return Math.sqrt(intervals.reduce((a,b)=>a+(b-avg)**2,0)/intervals.length)/avg; })() * 100)
+    : 0;
+  return { strideRegularity: regularity, swayMagnitude, walkSymmetry: symmetry, gaitScore, peakCount: peaks, strideIntervalCV };
 }
 
 // ─── Trend Detection Engine ──────────────────────────────
@@ -372,6 +621,7 @@ export default function MSACompassV2() {
   const modules = [
     { id: "checkin", icon: "☀", t: t.dailyCheckin, d: t.howAreYou, done: !!today.feeling },
     { id: "symptoms", icon: "◎", t: t.symptoms, d: t.symptomsDesc, done: !!today.symptoms },
+    { id: "sara", icon: "★", t: t.saraModule, d: t.saraDesc, done: !!today.sara },
     { id: "walk", icon: "⟡", t: t.walkTest, d: t.walkTestDesc, done: !!today.walkTest },
     { id: "voice", icon: "♪", t: t.voiceTest, d: t.voiceTestDesc, done: !!today.voiceTest },
     { id: "bp", icon: "♡", t: t.bloodPressure, d: t.bpDesc, done: today.bp?.length > 0 },
@@ -418,7 +668,7 @@ export default function MSACompassV2() {
           <div style={S.fade}>
             <div style={S.greetCard}>
               <p style={S.greetText}>{greeting()}</p>
-              <p style={S.dateText}>{new Date().toLocaleDateString(lang === "vi" ? "vi-VN" : lang === "de" ? "de-DE" : "en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}</p>
+              <p style={S.dateText}>{new Date().toLocaleDateString(lang === "vi" ? "vi-VN" : lang === "de" ? "de-DE" : lang === "ja" ? "ja-JP" : lang === "ko" ? "ko-KR" : "en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}</p>
               <div style={S.progBar}><div style={{ ...S.progFill, width: `${(doneCount / modules.length) * 100}%` }}/></div>
               <p style={S.progText}>{doneCount} {t.completedOf} {modules.length} {t.modules}</p>
             </div>
@@ -444,6 +694,7 @@ export default function MSACompassV2() {
             <button onClick={() => { setTab("track"); setSub(null); }} style={S.primaryBtn}>
               {t.todaySummary} →
             </button>
+            <ShareButton t={t}/>
           </div>
         )}
 
@@ -466,6 +717,7 @@ export default function MSACompassV2() {
         {/* Track sub-modules */}
         {tab === "track" && sub === "checkin" && <CheckinMod t={t} data={today} save={saveDay} back={() => setSub(null)} fl={flash} doFlash={doFlash}/>}
         {tab === "track" && sub === "symptoms" && <SymptomsMod t={t} data={today} save={saveDay} back={() => setSub(null)} fl={flash} doFlash={doFlash}/>}
+        {tab === "track" && sub === "sara" && <SaraMod t={t} data={today} save={saveDay} back={() => setSub(null)} fl={flash} doFlash={doFlash}/>}
         {tab === "track" && sub === "walk" && <WalkMod t={t} data={today} save={saveDay} back={() => setSub(null)} doFlash={doFlash}/>}
         {tab === "track" && sub === "voice" && <VoiceMod t={t} data={today} save={saveDay} back={() => setSub(null)} doFlash={doFlash}/>}
         {tab === "track" && sub === "bp" && <BPMod t={t} data={today} save={saveDay} back={() => setSub(null)} fl={flash} doFlash={doFlash}/>}
@@ -623,6 +875,12 @@ function GaitResults({ t, g }) {
           </div>
         ))}
       </div>
+      {g.strideIntervalCV !== undefined && (
+        <div style={{ textAlign: "center", background: "#1a1714", borderRadius: 8, padding: "10px 4px", marginTop: 8 }}>
+          <span style={{ fontSize: 20, fontWeight: 600, color: "#e8e0d4", display: "block" }}>{g.strideIntervalCV}%</span>
+          <span style={{ fontSize: 10, color: "#8a7e6e" }}>Stride Interval CV</span>
+        </div>
+      )}
     </div>
   );
 }
@@ -705,6 +963,16 @@ function SpeechResults({ t, s }) {
           </div>
         ))}
       </div>
+      {(s.jitter !== undefined || s.shimmer !== undefined) && (
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginTop: 8 }}>
+          {[["Jitter", s.jitter], ["Shimmer", s.shimmer]].map(([k, v]) => (
+            <div key={k} style={{ textAlign: "center", background: "#1a1714", borderRadius: 8, padding: "10px 4px" }}>
+              <span style={{ fontSize: 20, fontWeight: 600, color: "#e8e0d4", display: "block" }}>{v ?? "—"}</span>
+              <span style={{ fontSize: 10, color: "#8a7e6e" }}>{k}</span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -802,6 +1070,70 @@ function MedsMod({ t, data, save, back, fl, doFlash }) {
     </div>
     <button onClick={() => { save({ meds }); doFlash("md"); }} style={S.primaryBtn}>{fl.md ? t.saved : t.save}</button>
   </div>);
+}
+
+function SaraMod({ t, data, save, back, fl, doFlash }) {
+  const SARA_LABELS = [
+    [t.saraItem1, t.saraItem1Desc],
+    [t.saraItem2, t.saraItem2Desc],
+    [t.saraItem3, t.saraItem3Desc],
+    [t.saraItem4, t.saraItem4Desc],
+    [t.saraItem5, t.saraItem5Desc],
+    [t.saraItem6, t.saraItem6Desc],
+    [t.saraItem7, t.saraItem7Desc],
+    [t.saraItem8, t.saraItem8Desc],
+  ];
+  const [scores, setScores] = useState(data.sara?.items || [0,0,0,0,0,0,0,0]);
+  const total = scores.reduce((a, b) => a + b, 0);
+  const sevLabel = total <= 7 ? t.saraMild : total <= 15 ? t.saraMod : t.saraSev;
+  const sevColor = total <= 7 ? "#5a9a5a" : total <= 15 ? "#c9a227" : "#b84c4c";
+
+  return (<div style={S.fade}><Back fn={back}/>
+    <div style={S.mHead}><span style={S.bIco}>★</span><h2 style={S.mTitle}>{t.saraTitle}</h2></div>
+    <p style={S.instr}>{t.saraInstr}</p>
+    <div style={{ textAlign: "center", background: "#221f1b", borderRadius: 12, padding: "14px 16px", marginBottom: 20, border: "1px solid #2a2420" }}>
+      <span style={{ fontSize: 42, fontFamily: "'Fraunces', serif", color: sevColor }}>{total}</span>
+      <span style={{ display: "block", fontSize: 13, color: sevColor }}>{sevLabel}</span>
+      <span style={{ display: "block", fontSize: 11, color: "#6a6055", marginTop: 2 }}>{t.saraScore} / 24</span>
+    </div>
+    <div style={{ display: "flex", flexDirection: "column", gap: 14, marginBottom: 20 }}>
+      {SARA_LABELS.map(([label, desc], i) => (
+        <div key={i}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 5 }}>
+            <span style={{ fontSize: 13, fontWeight: 600, color: "#c0b8a8" }}>{i + 1}. {label}</span>
+            <span style={{ fontSize: 10, color: "#6a6055" }}>{desc}</span>
+          </div>
+          <div style={{ display: "flex", gap: 6 }}>
+            {SEVERITY.map((sv, v) => (
+              <button key={v} onClick={() => setScores(p => { const n = [...p]; n[i] = v; return n; })}
+                style={{ flex: 1, background: scores[i] === v ? SEV_COLORS[v] : "#221f1b", border: `1px solid ${scores[i] === v ? "transparent" : "#2a2420"}`, borderRadius: 8, padding: "8px 2px", color: scores[i] === v ? "#fff" : "#8a7e6e", fontSize: 11, cursor: "pointer", fontWeight: 500, transition: "all .15s" }}>
+                {t[sv]}
+              </button>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+    <button onClick={() => { save({ sara: { items: scores, total, ts: new Date().toISOString() } }); doFlash("sr"); }} style={S.primaryBtn}>
+      {fl.sr ? t.saved : t.save}
+    </button>
+  </div>);
+}
+
+function ShareButton({ t }) {
+  const [copied, setCopied] = useState(false);
+  const share = async () => {
+    const url = window.location.href;
+    if (navigator.share) {
+      try { await navigator.share({ title: "MSA Compass", text: t.shareMsg, url }); return; } catch {}
+    }
+    try { await navigator.clipboard.writeText(url); setCopied(true); setTimeout(() => setCopied(false), 2500); } catch {}
+  };
+  return (
+    <button onClick={share} style={{ width: "100%", background: "transparent", border: "1.5px solid #3a3530", borderRadius: 10, padding: "12px", fontSize: 13, color: "#8a7e6e", cursor: "pointer", marginTop: 8, fontWeight: 500 }}>
+      {copied ? t.shareCopied : `⇧ ${t.shareBtn}`}
+    </button>
+  );
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -990,15 +1322,39 @@ function PipelineView({ t }) {
 // ═══════════════════════════════════════════════════════════
 function SettingsView({ t, lang, changeLang, allDays, setShowReset }) {
   const exportCSV = () => {
-    const hdrs = ["date","feeling",...SYMPTOM_KEYS.map(k=>`symptom_${k}`),"falls","nearFalls","bp_readings","walk_duration","gait_score","voice_duration","speech_score","notes"];
-    const rows = Object.entries(allDays).sort((a,b)=>a[0].localeCompare(b[0])).map(([d,v]) => [
-      d, v.feeling||"",...SYMPTOM_KEYS.map(k=>v.symptoms?.[k]!==undefined?SEVERITY[v.symptoms[k]]:""), v.falls??"", v.nearFalls??"",
-      v.bp?.map(r=>`${r.position}:${r.systolic}/${r.diastolic}`).join(";")||"", v.walkTest?.duration??"", v.gaitAnalysis?.gaitScore??"",
-      v.voiceTest?.duration??"", v.speechAnalysis?.speechScore??"", v.checkinNotes||""
-    ].map(x=>`"${x}"`).join(","));
+    const hdrs = [
+      "STUDYDATE","UMSARS_GLOBAL","SYMPTOM_BALANCE","SYMPTOM_WALKING","SYMPTOM_SPEECH","SYMPTOM_SWALLOWING",
+      "SYMPTOM_DIZZINESS","SYMPTOM_FATIGUE","SYMPTOM_BLADDER","SYMPTOM_SLEEP",
+      "SARA_TOTAL","SARA_GAIT","SARA_STANCE","SARA_SITTING","SARA_SPEECH","SARA_FINGER","SARA_NOSE_FINGER","SARA_HAND_RHYTHM","SARA_HEEL_SHIN",
+      "FALLS_COUNT","NEAR_FALLS_COUNT","BP_LYG_SYS","BP_LYG_DIA","BP_STD_SYS","BP_STD_DIA","ORTHOSTATIC_DROP",
+      "WALK_DURATION_SEC","GAIT_SCORE","GAIT_STRIDE_REG","GAIT_SWAY","GAIT_SYMMETRY","GAIT_STRIDE_CV",
+      "VOICE_DURATION_SEC","SPEECH_SCORE","SPEECH_PAUSE_RATIO","SPEECH_RATE","SPEECH_PITCH_VAR","SPEECH_JITTER","SPEECH_SHIMMER",
+      "NOTES"
+    ];
+    const rows = Object.entries(allDays).sort((a,b)=>a[0].localeCompare(b[0])).map(([d,v]) => {
+      const lying = v.bp?.find(r=>r.position==="lying");
+      const standing = v.bp?.find(r=>r.position==="standing");
+      return [
+        d,
+        FEELING.indexOf(v.feeling ?? ""),
+        ...SYMPTOM_KEYS.map(k=>v.symptoms?.[k]??""),
+        v.sara?.total??"", ...(v.sara?.items||["","","","","","","",""]),
+        v.falls??"", v.nearFalls??"",
+        lying?.systolic??"", lying?.diastolic??"",
+        standing?.systolic??"", standing?.diastolic??"",
+        (lying && standing) ? (lying.systolic - standing.systolic) : "",
+        v.walkTest?.duration??"", v.gaitAnalysis?.gaitScore??"",
+        v.gaitAnalysis?.strideRegularity??"", v.gaitAnalysis?.swayMagnitude??"",
+        v.gaitAnalysis?.walkSymmetry??"", v.gaitAnalysis?.strideIntervalCV??"",
+        v.voiceTest?.duration??"", v.speechAnalysis?.speechScore??"",
+        v.speechAnalysis?.pauseRatio??"", v.speechAnalysis?.speakingRate??"",
+        v.speechAnalysis?.pitchVariability??"", v.speechAnalysis?.jitter??"", v.speechAnalysis?.shimmer??"",
+        v.checkinNotes||""
+      ].map(x=>`"${String(x).replace(/"/g,'""')}"`).join(",");
+    });
     const csv = [hdrs.join(","),...rows].join("\n");
     const blob = new Blob([csv], { type: "text/csv" });
-    const url = URL.createObjectURL(blob); const a = document.createElement("a"); a.href = url; a.download = `msa-compass-${dateKey()}.csv`; a.click(); URL.revokeObjectURL(url);
+    const url = URL.createObjectURL(blob); const a = document.createElement("a"); a.href = url; a.download = `msa-compass-cdisc-${dateKey()}.csv`; a.click(); URL.revokeObjectURL(url);
   };
   const exportJSON = () => {
     const blob = new Blob([JSON.stringify(allDays, null, 2)], { type: "application/json" });
@@ -1009,17 +1365,18 @@ function SettingsView({ t, lang, changeLang, allDays, setShowReset }) {
     <h2 style={S.secTitle}>{t.settings}</h2>
     <div style={{ padding: "16px 0", borderBottom: "1px solid #2a2420" }}>
       <span style={{ fontSize: 15, color: "#c0b8a8", display: "block", marginBottom: 8 }}>{t.language}</span>
-      <div style={{ display: "flex", gap: 6 }}>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
         {Object.entries(LANGS).map(([k, v]) => (
-          <button key={k} onClick={() => changeLang(k)} style={{ flex: 1, background: lang === k ? "#2a2420" : "#221f1b", border: `1.5px solid ${lang === k ? "#D4956A" : "#2a2420"}`, borderRadius: 8, padding: "10px 8px", color: lang === k ? "#D4956A" : "#8a7e6e", fontSize: 13, cursor: "pointer", fontWeight: 500 }}>{v}</button>
+          <button key={k} onClick={() => changeLang(k)} style={{ flex: "1 0 auto", background: lang === k ? "#2a2420" : "#221f1b", border: `1.5px solid ${lang === k ? "#D4956A" : "#2a2420"}`, borderRadius: 8, padding: "10px 8px", color: lang === k ? "#D4956A" : "#8a7e6e", fontSize: 13, cursor: "pointer", fontWeight: 500, minWidth: 70 }}>{v}</button>
         ))}
       </div>
     </div>
     <div style={{ padding: "16px 0", borderBottom: "1px solid #2a2420" }}>
       <span style={{ fontSize: 15, color: "#c0b8a8", display: "block", marginBottom: 8 }}>{t.exportData}</span>
       <p style={{ fontSize: 13, color: "#8a7e6e", marginBottom: 12 }}>{t.exportDesc}</p>
-      <button onClick={exportCSV} style={{ ...S.primaryBtn, marginBottom: 8 }}>{t.exportCSV}</button>
-      <button onClick={exportJSON} style={{ ...S.primaryBtn, background: "transparent", border: "1.5px solid #D4956A", color: "#D4956A" }}>{t.exportJSON}</button>
+      <button onClick={exportCSV} style={{ ...S.primaryBtn, marginBottom: 8 }}>{t.exportCDISC}</button>
+      <button onClick={exportJSON} style={{ ...S.primaryBtn, background: "transparent", border: "1.5px solid #D4956A", color: "#D4956A", marginBottom: 8 }}>{t.exportJSON}</button>
+      <ShareButton t={t}/>
     </div>
     <div style={{ background: "#221f1b", borderRadius: 14, padding: "20px 18px", marginTop: 20, border: "1px solid #2a2420" }}>
       <h3 style={{ fontFamily: "'Fraunces', serif", fontSize: 18, marginBottom: 10 }}>{t.about}</h3>
