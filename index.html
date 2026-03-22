@@ -5,13 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="theme-color" content="#1a1714" />
     <meta name="description" content="MSA Compass — The all-in-one platform for MSA-C patients, caregivers, and researchers. Track symptoms, analyze speech and gait, contribute to research." />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="MSA Compass" />
+    <link rel="manifest" href="/msa-compass/manifest.json" />
     <title>MSA Compass — Track · Analyze · Research · Hope</title>
     <style>
       body { margin: 0; background: #1a1714; font-family: -apple-system, sans-serif; }
     </style>
-    <script type="module" crossorigin src="/msa-compass/assets/index-BdUxsC-F.js"></script>
+    <script type="module" crossorigin src="/msa-compass/assets/index-DQpv7mZE.js"></script>
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => navigator.serviceWorker.register('/msa-compass/sw.js'));
+      }
+    </script>
   </body>
 </html>
